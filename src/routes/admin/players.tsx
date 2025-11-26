@@ -54,7 +54,7 @@ const users = [
 
 function Players() {
   return (
-    <main className="p-6 space-y-6 w-100%">
+    <main className="p-6 space-y-6">
       <Header
         title="Manage Users"
         description="Filter, sort, and access detailed user profiles"

@@ -13,7 +13,7 @@ export const sidebarItems = [
   },
   {
     id: 3,
-    icon: "/assets/icons/games.svg",
+    icon: "/assets/icons/all-games.svg",
     label: "Games",
     href: "/games",
   },
@@ -25,8 +25,8 @@ export const sidebarItems = [
   },
   {
     id: 6,
-    icon: "/assets/icons/risk.svg",
-    label: "Risk & Alerts",
-    href: "/risk",
+    icon: "/assets/icons/games.svg",
+    label: "Transactions",
+    href: "/transactions",
   },
 ];
