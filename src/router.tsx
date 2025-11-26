@@ -1,26 +1,104 @@
-// router.ts
-import { Router, Route, RootRoute } from "@tanstack/react-router";
-import App from "./App";
-import Home from "./routes/home";
-import About from "./routes/about";
+import {
+  Router,
+  Outlet,
+  createRootRoute,
+  createRoute,
+} from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
-const rootRoute = new RootRoute({
-  component: App, // <-- your App stays as layout
+/* ------------------------ ROOT ------------------------ */
+
+const rootRoute = createRootRoute({
+  component: () => (
+    <>
+      <Outlet />
+      <TanStackRouterDevtools />
+    </>
+  ),
 });
 
-const homeRoute = new Route({
+/* ------------------------ PUBLIC ROOT LAYOUT ------------------------ */
+
+import RootLayout from "./routes/root/page-layout";
+import GamesPage from "./routes/root/games-page";
+import SignIn from "./routes/root/sign-in";
+
+const publicLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
+  id: "root-layout",
+  component: RootLayout,
+});
+
+const homeRoute = createRoute({
+  getParentRoute: () => publicLayoutRoute,
   path: "/",
-  component: Home,
+  component: GamesPage,
 });
 
-const aboutRoute = new Route({
+const signInRoute = createRoute({
+  getParentRoute: () => publicLayoutRoute,
+  path: "sign-in",
+  component: SignIn,
+});
+
+/* ------------------------ ADMIN LAYOUT ------------------------ */
+
+import AdminLayout from "./routes/admin/admin-layout";
+import Dashboard from "./routes/admin/dashboard";
+import Games from "./routes/admin/games";
+import Providers from "./routes/admin/providers";
+import Players from "./routes/admin/players";
+import Risk from "./routes/admin/risk";
+
+const adminLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/about",
-  component: About,
+  path: "admin",
+  component: AdminLayout,
 });
 
-const routeTree = rootRoute.addChildren([homeRoute, aboutRoute]);
+const adminDashboardRoute = createRoute({
+  getParentRoute: () => adminLayoutRoute,
+  path: "dashboard",
+  component: Dashboard,
+});
+
+const adminGamesRoute = createRoute({
+  getParentRoute: () => adminLayoutRoute,
+  path: "games",
+  component: Games,
+});
+
+const adminProvidersRoute = createRoute({
+  getParentRoute: () => adminLayoutRoute,
+  path: "providers",
+  component: Providers,
+});
+
+const adminPlayersRoute = createRoute({
+  getParentRoute: () => adminLayoutRoute,
+  path: "players",
+  component: Players,
+});
+
+const adminRiskRoute = createRoute({
+  getParentRoute: () => adminLayoutRoute,
+  path: "risk",
+  component: Risk,
+});
+
+/* ------------------------ ROUTE TREE ------------------------ */
+
+const routeTree = rootRoute.addChildren([
+  publicLayoutRoute.addChildren([homeRoute, signInRoute]),
+
+  adminLayoutRoute.addChildren([
+    adminDashboardRoute,
+    adminGamesRoute,
+    adminProvidersRoute,
+    adminPlayersRoute,
+    adminRiskRoute,
+  ]),
+]);
 
 export const router = new Router({ routeTree });
 
