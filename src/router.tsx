@@ -5,15 +5,16 @@ import {
   createRoute,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { SidebarProvider } from "./components/ui/sidebar";
 
 /* ------------------------ ROOT ------------------------ */
 
 const rootRoute = createRootRoute({
   component: () => (
-    <>
+    <SidebarProvider>
       <Outlet />
       <TanStackRouterDevtools />
-    </>
+    </SidebarProvider>
   ),
 });
 
@@ -52,7 +53,7 @@ import Risk from "./routes/admin/risk";
 
 const adminLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "admin",
+  id: "admin-layout",
   component: AdminLayout,
 });
 
