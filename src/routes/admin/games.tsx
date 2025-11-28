@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { FiltersGames, type GamesFilters } from "../../components/filter-games";
 import { GamesTable } from "../../components/games-table";
-import { fetchGames } from "../../lib/fetch";
+import { getGames } from "../../lib/services"; // ✅ updated import
 import { Header } from "../../components/header";
 
 export default function GamesPage() {
@@ -13,9 +13,13 @@ export default function GamesPage() {
     showEnabledOnly: false,
   });
 
-  const { data, isLoading } = useQuery({
+  const {
+    data: games,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["games", filters],
-    queryFn: ({ queryKey }) => fetchGames(queryKey[1] as GamesFilters),
+    queryFn: () => getGames(filters), // ✅ no more unsafe key parsing
     placeholderData: (prev) => prev,
   });
 
@@ -25,9 +29,15 @@ export default function GamesPage() {
         title="Games"
         description="Browse and manage integrated casino games"
       />
+
       <FiltersGames filters={filters} setFilters={setFilters} />
+
       <div className="rounded-xl border bg-card">
-        <GamesTable games={data || []} loading={isLoading} />
+        {isError ? (
+          <p className="p-4 text-red-600">Failed to load games.</p>
+        ) : (
+          <GamesTable games={games || []} loading={isLoading} />
+        )}
       </div>
     </main>
   );

@@ -8,7 +8,7 @@ function SignInRouteComponent() {
 
   useEffect(() => {
     if (!loading && user) {
-      window.location.href = "/";
+      window.location.href = "/dashboard";
     }
   }, [loading, user]);
 

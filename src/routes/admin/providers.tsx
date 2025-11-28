@@ -8,14 +8,18 @@ import {
 } from "../../components/ui/table";
 
 import { useQuery } from "@tanstack/react-query";
-import { fetchProviders } from "../../lib/fetch";
+import { getProviders } from "../../lib/services";
 import { Badge } from "../../components/ui/badge";
 import { Header } from "../../components/header";
 
 function Providers() {
-  const { data: providers, isLoading } = useQuery({
+  const {
+    data: providers,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["providers"],
-    queryFn: fetchProviders,
+    queryFn: getProviders,
   });
 
   return (
@@ -28,6 +32,8 @@ function Providers() {
       <div className="rounded-xl border bg-card">
         {isLoading ? (
           <p className="p-4">Loading...</p>
+        ) : isError ? (
+          <p className="p-4 text-red-500">Failed to load providers.</p>
         ) : (
           <Table>
             <TableHeader>
@@ -46,23 +52,29 @@ function Providers() {
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <img
-                        src={p.logoUrl}
-                        className="h-10 w-10 rounded-md object-cover"
+                        src={p.logoUrl || "/fallback-logo.svg"}
+                        alt={p.name}
+                        className="h-10 w-10 rounded-md object-contain"
                       />
                       <span>{p.name}</span>
                     </div>
                   </TableCell>
 
-                  {/* gamesCount may not exist yet */}
                   <TableCell>{p.gamesCount ?? "-"}</TableCell>
 
                   <TableCell>
                     {p.apiHealth === "ok" ? (
-                      <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200">
+                      <Badge
+                        variant="outline"
+                        className="text-emerald-700 border-emerald-300"
+                      >
                         OK
                       </Badge>
                     ) : (
-                      <Badge className="bg-yellow-50 text-yellow-700 border-yellow-200">
+                      <Badge
+                        variant="outline"
+                        className="text-yellow-700 border-yellow-300"
+                      >
                         Warning
                       </Badge>
                     )}
@@ -70,17 +82,23 @@ function Providers() {
 
                   <TableCell>
                     {p.enabled ? (
-                      <Badge className="bg-blue-50 text-blue-700 border-blue-200">
+                      <Badge
+                        variant="outline"
+                        className="text-blue-700 border-blue-300"
+                      >
                         Enabled
                       </Badge>
                     ) : (
-                      <Badge className="bg-gray-50 text-gray-600 border-gray-200">
+                      <Badge
+                        variant="outline"
+                        className="text-gray-600 border-gray-300"
+                      >
                         Disabled
                       </Badge>
                     )}
                   </TableCell>
 
-                  <TableCell>{p.lastSync ?? "Never"}</TableCell>
+                  <TableCell>{p.lastSync || "Never"}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

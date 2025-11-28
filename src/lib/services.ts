@@ -1,9 +1,10 @@
 import type { GamesFilters } from "../components/filter-games";
 import type { Game } from "../components/games-table";
 import type { Provider } from "../constants/types";
-import { apiFetch } from "./api";
 
-export async function fetchGames(filters: GamesFilters): Promise<Game[]> {
+import { http } from "./http";
+
+export async function getGames(filters: GamesFilters): Promise<Game[]> {
   const params = new URLSearchParams({
     search: filters.search,
     provider: filters.provider,
@@ -11,9 +12,9 @@ export async function fetchGames(filters: GamesFilters): Promise<Game[]> {
     enabled: filters.showEnabledOnly ? "1" : "",
   });
 
-  return apiFetch(`/games?${params.toString()}`);
+  return http(`/games?${params.toString()}`);
 }
 
-export async function fetchProviders(): Promise<Provider[]> {
-  return apiFetch("/providers");
+export async function getProviders(): Promise<Provider[]> {
+  return http("/providers");
 }
