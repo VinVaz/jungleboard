@@ -7,13 +7,16 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { router } from "./router";
 import { queryClient } from "./queryClient";
 
-import "./index.css";
+import "./styles/index.css";
+import { AuthProvider } from "./context/auth-provider";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <ReactQueryDevtools />
-    </QueryClientProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+    </AuthProvider>
   </StrictMode>
 );

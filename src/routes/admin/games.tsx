@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { FiltersGames, type GamesFilters } from "../../components/filter-games";
 import { GamesTable } from "../../components/games-table";
-import { mockFetchGames } from "../../lib/api";
+import { fetchGames } from "../../lib/fetch";
 import { Header } from "../../components/header";
 
 export default function GamesPage() {
@@ -15,7 +15,7 @@ export default function GamesPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["games", filters],
-    queryFn: ({ queryKey }) => mockFetchGames(queryKey[1] as GamesFilters),
+    queryFn: ({ queryKey }) => fetchGames(queryKey[1] as GamesFilters),
     placeholderData: (prev) => prev,
   });
 

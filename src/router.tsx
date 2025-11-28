@@ -49,7 +49,7 @@ import Dashboard from "./routes/admin/dashboard";
 import Games from "./routes/admin/games";
 import Providers from "./routes/admin/providers";
 import Players from "./routes/admin/players";
-import Transactions from "./routes/admin/transactions";
+import PlayerBehavior from "./routes/admin/player-behaviour";
 
 const adminLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -81,10 +81,10 @@ const adminPlayersRoute = createRoute({
   component: Players,
 });
 
-const adminTransactionsRoute = createRoute({
+const playerBehaviorRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
-  path: "transactions",
-  component: Transactions,
+  path: "player-behaviour",
+  component: PlayerBehavior,
 });
 
 /* ------------------------ ROUTE TREE ------------------------ */
@@ -97,7 +97,7 @@ const routeTree = rootRoute.addChildren([
     adminGamesRoute,
     adminProvidersRoute,
     adminPlayersRoute,
-    adminTransactionsRoute,
+    playerBehaviorRoute,
   ]),
 ]);
 

@@ -10,9 +10,12 @@ import { Badge } from "../components/ui/badge";
 import { Switch } from "../components/ui/switch";
 
 export type Game = {
-  id: string;
+  id: number;
   name: string;
-  provider: string;
+  provider: {
+    id: number;
+    name: string;
+  };
   category: string;
   enabled: boolean;
   thumbnail: string;
@@ -52,7 +55,7 @@ export function GamesTable({ games, loading }: GamesTableProps) {
             <TableCell className="font-medium">{game.name}</TableCell>
 
             <TableCell>
-              <Badge variant="secondary">{game.provider}</Badge>
+              <Badge variant="secondary">{game.provider?.name}</Badge>
             </TableCell>
 
             <TableCell>{game.category}</TableCell>
